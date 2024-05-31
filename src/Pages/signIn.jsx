@@ -18,16 +18,24 @@ import { Formik, Field, Form, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
+// Extend the validation schema
 const validationSchema = Yup.object({
-  username: Yup.string().email("Invalid email address").required("Required"),
+  username:Yup.string().required("Required"),
+  email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
     .required("Required"),
+  // confirmPassword: Yup.string()
+  //   .oneOf([Yup.ref('password'), null], "Passwords must match")
+  //   .required("Required"),
 });
 
+// Update initial values
 const initialValues = {
-  username: "",
+  username: "" ,
+  email: "",
   password: "",
+  // confirmPassword: "",
 };
 
 export default function SignIn() {
@@ -41,7 +49,7 @@ export default function SignIn() {
         </Text>
         <HStack mt="2" justifyContent="center">
           <Text color="gray.400" fontSize="lg" fontWeight="normal">
-           Already have an account?
+            Already have an account?
           </Text>
           <Link color="#52930f" fontSize="lg" fontWeight="normal" href="/login">
             Login
@@ -60,7 +68,7 @@ export default function SignIn() {
             {({ isSubmitting }) => (
               <Form>
                 <Flex flexDir="column" h="full" w="full">
-                  <Box pb="5" pt={5}>
+                <Box pb="5" pt={5}>
                     <Field name="username">
                       {({ field, form }) => (
                         <FormControl
@@ -69,12 +77,12 @@ export default function SignIn() {
                           }
                         >
                           <FormLabel htmlFor="username" color="#fff">
-                            Email
+                          Username
                           </FormLabel>
                           <Input
                             {...field}
                             id="username"
-                            placeholder="abc@gmail.com"
+                            placeholder="Enter username"
                             type="email"
                           />
                           <FormErrorMessage>
@@ -85,7 +93,32 @@ export default function SignIn() {
                       )}
                     </Field>
                   </Box>
-                  <Box pb="2" pos="relative">
+                  <Box pb="5" >
+                    <Field name="email">
+                      {({ field, form }) => (
+                        <FormControl
+                          isInvalid={
+                            !!form.errors.username && !!form.touched.username
+                          }
+                        >
+                          <FormLabel htmlFor="email" color="#fff">
+                            Email
+                          </FormLabel>
+                          <Input
+                            {...field}
+                            id="email"
+                            placeholder="abc@gmail.com"
+                            type="email"
+                          />
+                          <FormErrorMessage>
+                            {typeof form.errors.email === "string" &&
+                              form.errors.email}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                  </Box>
+                  <Box pb="5" >
                     <Field name="password">
                       {({ field, form }) => (
                         <FormControl
@@ -110,6 +143,32 @@ export default function SignIn() {
                       )}
                     </Field>
                   </Box>
+                  
+                  {/* <Box pb="5" >
+                  <Field name="confirmPassword">
+                      {({ field, form }) => (
+                        <FormControl
+                          isInvalid={
+                            !!form.errors.password && !!form.touched.password
+                          }
+                        >
+                          <FormLabel htmlFor="confirmPassword" color="#fff">
+                           Confirm Password
+                          </FormLabel>
+                          <Input
+                            {...field}
+                            id="confirmPassword"
+                            placeholder="****"
+                            type="password"
+                          />
+                          <FormErrorMessage>
+                            {typeof form.errors.confirmPassword === "string" &&
+                              form.errors.confirmPassword}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                  </Box> */}
                   <Spacer />
                   <Box px={0} py={4}>
                     <Button
