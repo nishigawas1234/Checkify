@@ -13,14 +13,16 @@ import {
   FormLabel,
   FormErrorMessage,
   Image,
+  useToast
 } from "@chakra-ui/react";
 import { Formik, Field, Form, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Extend the validation schema
 const validationSchema = Yup.object({
-  username:Yup.string().required("Required"),
+  username: Yup.string().required("Required"),
   email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
@@ -32,7 +34,7 @@ const validationSchema = Yup.object({
 
 // Update initial values
 const initialValues = {
-  username: "" ,
+  username: "",
   email: "",
   password: "",
   // confirmPassword: "",
@@ -40,6 +42,31 @@ const initialValues = {
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const toast = useToast();
+
+  const submitRegister = (values) => {
+    axios
+      .post("/sign-up", {
+        name: values.username,
+        email: values.email,
+        password: values.password,
+      })
+      .then((response) => {
+        navigate("/login");
+      })
+      .catch((error) => {
+        toast({
+          title: "Something went wrong.",
+          description: "Unable to register. Please try again later.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        console.error("Error registering user:", error);
+      });
+  };
+
+
   return (
     <VStack m="auto" h="100%" justifyContent="center" bg="#0f0f0f">
       <VStack bg="#191919" p={6} borderRadius="16px" w="30%">
@@ -60,15 +87,14 @@ export default function SignIn() {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={(values, { setSubmitting }) => {
-              console.log(values);
-              navigate("/login");
+              submitRegister(values);
               setSubmitting(false);
             }}
           >
             {({ isSubmitting }) => (
               <Form>
                 <Flex flexDir="column" h="full" w="full">
-                <Box pb="5" pt={5}>
+                  <Box pb="5" pt={5}>
                     <Field name="username">
                       {({ field, form }) => (
                         <FormControl
@@ -77,13 +103,14 @@ export default function SignIn() {
                           }
                         >
                           <FormLabel htmlFor="username" color="#fff">
-                          Username
+                            Username
                           </FormLabel>
                           <Input
                             {...field}
                             id="username"
                             placeholder="Enter username"
-                            type="email"
+                            type="text"
+                            background=""
                           />
                           <FormErrorMessage>
                             {typeof form.errors.username === "string" &&
@@ -93,7 +120,7 @@ export default function SignIn() {
                       )}
                     </Field>
                   </Box>
-                  <Box pb="5" >
+                  <Box pb="5">
                     <Field name="email">
                       {({ field, form }) => (
                         <FormControl
@@ -109,6 +136,7 @@ export default function SignIn() {
                             id="email"
                             placeholder="abc@gmail.com"
                             type="email"
+                            background=""
                           />
                           <FormErrorMessage>
                             {typeof form.errors.email === "string" &&
@@ -118,7 +146,7 @@ export default function SignIn() {
                       )}
                     </Field>
                   </Box>
-                  <Box pb="5" >
+                  <Box pb="5">
                     <Field name="password">
                       {({ field, form }) => (
                         <FormControl
@@ -134,6 +162,7 @@ export default function SignIn() {
                             id="password"
                             placeholder="****"
                             type="password"
+                            background=""
                           />
                           <FormErrorMessage>
                             {typeof form.errors.password === "string" &&
@@ -143,7 +172,7 @@ export default function SignIn() {
                       )}
                     </Field>
                   </Box>
-                  
+
                   {/* <Box pb="5" >
                   <Field name="confirmPassword">
                       {({ field, form }) => (

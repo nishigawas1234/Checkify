@@ -13,10 +13,12 @@ import {
   FormLabel,
   FormErrorMessage,
   Image,
+  useToast
 } from "@chakra-ui/react";
 import { Formik, Field, Form, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const validationSchema = Yup.object({
   username: Yup.string().email("Invalid email address").required("Required"),
@@ -32,10 +34,33 @@ const initialValues = {
 
 export default function Login() {
     const navigate = useNavigate();
+    const toast = useToast();
+
+    const submitLogin = (values) => {
+      axios
+        .post("/login", {
+          email: values.username,
+          password: values.password,
+        })
+        .then((response) => {
+          navigate("/dashboard");
+        })
+        .catch((error) => {
+          toast({
+            title: "Something went wrong.",
+            description: "Unable to login. Please try again later.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+          console.error("Error registering user:", error);
+        });
+    };
+
+
   return (
     <VStack m="auto" h="100%" justifyContent="center" bg="#0f0f0f">
       <VStack bg="#191919" p={6} borderRadius="16px" w="30%">
-        {" "}
         <Image src="./Images/logo.png" h="100px" w="100px" />
         <Text color="#fff" fontSize="3xl" fontWeight="medium" mt="4">
           Welcome Back!
@@ -53,8 +78,8 @@ export default function Login() {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={(values, { setSubmitting }) => {
-              console.log(values);
-              navigate("/dashboard");
+              submitLogin(values);
+             
               setSubmitting(false);
             }}
           >
@@ -77,6 +102,7 @@ export default function Login() {
                             id="username"
                             placeholder="abc@gmail.com"
                             type="email"
+                            background=""
                           />
                           <FormErrorMessage>
                             {typeof form.errors.username === "string" &&
@@ -102,6 +128,7 @@ export default function Login() {
                             id="password"
                             placeholder="****"
                             type="password"
+                            background=""
                           />
                           <FormErrorMessage>
                             {typeof form.errors.password === "string" &&
