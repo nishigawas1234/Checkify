@@ -9,7 +9,7 @@ const theme = extendTheme({
   styles: {
     global: {
       "html, body, #root": {
-        height: "100%",
+      
       },
       body: {
         margin: 0,
