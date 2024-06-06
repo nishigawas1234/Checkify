@@ -30,9 +30,11 @@ function App() {
 function AppLayout() {
   const { authToken } = useContext(AuthContext);
   console.log(authToken,"authToken")
+
+  const isSideBar = window.location.href.includes("/login") ||  window.location.href.includes("/sign-in")
   return (
     <div className="app-container">
-      {authToken &&   <Sidebar />}
+      {!isSideBar &&   <Sidebar />}
       <div className="main-content">
         <Routes>
         <Route path="/login" element={<Login />} />
