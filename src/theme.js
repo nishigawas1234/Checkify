@@ -1,5 +1,5 @@
 
-import { extendTheme } from '@chakra-ui/react';
+import { background, extendTheme } from '@chakra-ui/react';
 
 const config = {
   initialColorMode: "dark",
@@ -9,7 +9,8 @@ const theme = extendTheme({
   styles: {
     global: {
       "html, body, #root": {
-      
+        height: "100%",
+        background : "#0F0F0F"
       },
       body: {
         margin: 0,
