@@ -1,28 +1,55 @@
-import React from "react";
-import logo from './logo.svg';
-import './App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ChakraProvider,useColorMode} from '@chakra-ui/react';
+import React ,{useContext} from "react";
+import { BrowserRouter, Routes, Route , Navigate } from "react-router-dom";
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from "./theme";
+import { Provider } from 'react-redux';
+import store from './store';
+import Sidebar from './Components/Common/Sidebar';
+import Dashboard from './Pages/dashboard';
+import Notes from './Pages/notes';
 import Login from "./Pages/login"; 
 import SignIn from "./Pages/signIn";
-import theme from "./theme"
-
-
+import AuthContext, { AuthProvider } from './Services/context/AuthContext';
 
 function App() {
   return (
     <React.StrictMode>
-    <ChakraProvider theme={theme}>
-    <BrowserRouter>
-    <Routes>
-        <Route path="/login" element={<Login />}/>
-        <Route path="/sign-in" element={<SignIn/>}/>
-      </Routes>
-      </BrowserRouter> 
-    </ChakraProvider>
-    
-  </React.StrictMode>
-  )
+      <Provider store={store}>
+        <ChakraProvider theme={theme}>
+          <AuthProvider>
+            <BrowserRouter>
+              <AppLayout />
+            </BrowserRouter> 
+          </AuthProvider>
+        </ChakraProvider>
+      </Provider>
+    </React.StrictMode>
+  );
 }
+
+function AppLayout() {
+  const { authToken } = useContext(AuthContext);
+  console.log(authToken,"authToken")
+  return (
+    <div className="app-container">
+      {authToken &&   <Sidebar />}
+      <div className="main-content">
+        <Routes>
+        <Route path="/login" element={<Login />} />
+          <Route path="/sign-in" element={<SignIn />} /> 
+          <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
+          <Route path="/notes" element={<PrivateRoute><Notes/></PrivateRoute>} />
+        </Routes>
+      </div>
+    </div>
+  );
+}
+
+const PrivateRoute = ({ children }) => {
+  const { authToken } = useContext(AuthContext);
+  console.log("Auth Token (PrivateRoute):",children , authToken);
+  return authToken ? children : <Navigate to="/login" />;
+};
+
 
 export default App;

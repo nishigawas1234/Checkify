@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useContext} from "react";
 import {
   Text,
   VStack,
@@ -19,6 +19,7 @@ import { Formik, Field, Form, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AuthContext from '../Services/context/AuthContext';
 
 const validationSchema = Yup.object({
   username: Yup.string().email("Invalid email address").required("Required"),
@@ -34,27 +35,13 @@ const initialValues = {
 
 export default function Login() {
     const navigate = useNavigate();
-    const toast = useToast();
+ 
+    const { login } = useContext(AuthContext);
+    
 
     const submitLogin = (values) => {
-      axios
-        .post("/login", {
-          email: values.username,
-          password: values.password,
-        })
-        .then((response) => {
-          navigate("/dashboard");
-        })
-        .catch((error) => {
-          toast({
-            title: "Something went wrong.",
-            description: "Unable to login. Please try again later.",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-          console.error("Error registering user:", error);
-        });
+      login(values.username, values.password);
+   
     };
 
 
