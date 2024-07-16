@@ -18,7 +18,7 @@ import {
 import { Formik, Field, Form, FieldProps, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../Api/axios";
 import AuthContext from '../Services/context/AuthContext';
 
 const validationSchema = Yup.object({
