@@ -1,12 +1,10 @@
 import { Box, VStack, Text, Link, Flex } from "@chakra-ui/react";
 import { Logo, NavToday, NavNote, NavPersonal, NavWork } from "../Icons";
 import UserProfile from "./UserProfile";
-import { useState } from "react";
 import { useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
   let pathname = useLocation().pathname;
-  console.log(pathname, "asPath");
   const siderBarItem = [
     {
       tasks: [

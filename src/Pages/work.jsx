@@ -7,7 +7,7 @@ import { todaysDate } from "../Services/helpers/todaysDate";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AuthContext from '../Services/context/AuthContext';
+import AuthContext from "../Services/context/AuthContext";
 
 
 const validationSchema = Yup.object({
@@ -20,17 +20,18 @@ const initialValues = {
   description: "",
 };
 
-export default function Dashboard() {
+export default function Work() {
+    const { userData } = useContext(AuthContext);
   const [isAdd, setIsAdd] = useState();
   const [tasks, getTasks] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isPending , setIsPending] = useState()
-  const { userData } = useContext(AuthContext);
 
   useEffect(()=>{
     getTaskData()
-  },[userData])
+  },[])
+
 
   const getTaskData = async () => {
     setLoading(true);
@@ -39,7 +40,8 @@ export default function Dashboard() {
       const response = await axios.get(
         `/task/getData/${userData.uuid}`
       );
-      getTasks(response.data.tasks);
+      const filterData = response.data.tasks.filter(item => item.isPersonal !== true)
+      getTasks(filterData);
       setIsAdd(false);
     } catch (err) {
       setError(err.message || "An error occurred");

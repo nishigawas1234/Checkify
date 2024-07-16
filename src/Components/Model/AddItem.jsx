@@ -23,10 +23,10 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import React from "react";
-import { Formik, Field, Form, FieldProps, FormikHelpers } from "formik";
+import { Formik, Field, Form} from "formik";
 
 
-export default function AddItem({ isOpen, onClose, type ,validationSchema,initialValues}) {
+export default function AddItem({ isOpen, onClose, type ,validationSchema,initialValues , handleSubmit}) {
   return (
     <Modal
       closeOnOverlayClick={false}
@@ -47,8 +47,8 @@ export default function AddItem({ isOpen, onClose, type ,validationSchema,initia
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={(values, { setSubmitting }) => {
-                console.log(values);
                 setSubmitting(false);
+                handleSubmit(values)
               }}
             >
               {({ isSubmitting }) => (
