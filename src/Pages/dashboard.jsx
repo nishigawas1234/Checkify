@@ -94,7 +94,7 @@ export default function Dashboard() {
         </Button>
       </Flex>
       <Box mt={5}>
-        <Table data={tasks}/>
+        <Table initialData={tasks}/>
       </Box>
       <Box pos="fixed" bottom="24px" right="24px">
         <Add
