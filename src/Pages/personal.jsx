@@ -4,7 +4,7 @@ import { Table, AddItem } from "../Components";
 import { Add } from "../Components/Icons";
 import * as Yup from "yup";
 import { todaysDate } from "../Services/helpers/todaysDate";
-import axios from "axios";
+import axios from "../Api/axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthContext from "../Services/context/AuthContext";
