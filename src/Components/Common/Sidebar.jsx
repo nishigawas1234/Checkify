@@ -9,7 +9,7 @@ const Sidebar = () => {
     {
       tasks: [
         {
-          label: "Today",
+          label: "All Tasks",
           icon: (
             <NavToday
               mr="8px"
@@ -73,9 +73,10 @@ const Sidebar = () => {
       pt={0}
     >
       
-      <Text fontSize="xl" fontWeight="bold" mb="10">
-        <Logo />
-      </Text>
+      <Flex  justifyContent="center" my="10">
+        {/* <Logo /> */}
+        <img src="Images/logo1.png"></img>
+      </Flex>
       <Box borderBottom="1px solid #2B2B2B" pb="6">
         <UserProfile />
       </Box>
