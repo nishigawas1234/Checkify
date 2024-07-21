@@ -13,11 +13,13 @@ import AuthContext from '../Services/context/AuthContext';
 const validationSchema = Yup.object({
   title: Yup.string().required("Required"),
   description: Yup.string().required("Required"),
+  type: Yup.string().required("Required"),
 });
 
 const initialValues = {
   title: "",
   description: "",
+  type:""
 };
 
 export default function Dashboard() {
@@ -47,13 +49,14 @@ export default function Dashboard() {
   };
   
   const handleTaskSubmit = async (values)=>{
+    console.log(values,"-------------------")
     try {
       const response = await axios.post(
         `/task/addData/${userData.uuid}`,
         {
           title: values.title,
           isChecked: false,
-          isPersonal: true,
+          isPersonal: values.type === "Personal" ? true : false,
           description:values.description
         }
       );
