@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Avatar,
   Box,
@@ -21,12 +22,20 @@ import {
   FormErrorMessage,
   Textarea,
   ModalCloseButton,
+  ButtonGroup,
 } from "@chakra-ui/react";
-import React from "react";
-import { Formik, Field, Form} from "formik";
+import { Formik, Field, Form } from "formik";
 
+export default function AddItem({
+  isOpen,
+  onClose,
+  type,
+  validationSchema,
+  initialValues,
+  handleSubmit,
+}) {
+  const [selectedType, setSelectedType] = useState("");
 
-export default function AddItem({ isOpen, onClose, type ,validationSchema,initialValues , handleSubmit}) {
   return (
     <Modal
       closeOnOverlayClick={false}
@@ -44,18 +53,18 @@ export default function AddItem({ isOpen, onClose, type ,validationSchema,initia
         <ModalBody>
           <Box w="full" maxW="md">
             <Formik
-              initialValues={initialValues}
+              initialValues={{ ...initialValues, type: "" }}
               validationSchema={validationSchema}
               onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(false);
-                handleSubmit(values)
+                handleSubmit({ ...values, type: selectedType });
               }}
             >
-              {({ isSubmitting }) => (
+              {({ isSubmitting, setFieldValue }) => (
                 <Form>
                   <Flex flexDir="column" h="full" w="full">
                     <Box pb="5" pt={5}>
-                      {type == "task" && (
+                      {type === "task" && (
                         <Field name="title">
                           {({ field, form }) => (
                             <FormControl
@@ -92,7 +101,7 @@ export default function AddItem({ isOpen, onClose, type ,validationSchema,initia
                             }
                           >
                             <FormLabel htmlFor="description" color="#fff">
-                           {type == "task" ? "Description" : "Note"}   
+                              {type === "task" ? "Description" : "Note"}
                             </FormLabel>
 
                             <Textarea
@@ -112,6 +121,35 @@ export default function AddItem({ isOpen, onClose, type ,validationSchema,initia
                         )}
                       </Field>
                     </Box>
+                    {type === "task" && (
+                      <Box pb="5"  pt={3}>
+                        <FormControl>
+                          <FormLabel htmlFor="type" color="#fff">
+                            Type
+                          </FormLabel>
+                          <ButtonGroup size="sm" isAttached variant="outline">
+                            <Button
+                              onClick={() => {
+                                setSelectedType("Personal");
+                                setFieldValue("type", "Personal");
+                              }}
+                              isActive={selectedType === "Personal"}
+                            >
+                              Personal
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                setSelectedType("Work");
+                                setFieldValue("type", "Work");
+                              }}
+                              isActive={selectedType === "Work"}
+                            >
+                              Work
+                            </Button>
+                          </ButtonGroup>
+                        </FormControl>
+                      </Box>
+                    )}
                     <Spacer />
                     <Box px={0} py={4}>
                       <Button
