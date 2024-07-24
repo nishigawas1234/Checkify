@@ -30,7 +30,7 @@ export default function Table({ initialData }) {
         )
       );
 
-      toast.success("Task completed");
+      toast.success("Task updated");
     } catch (error) {
       toast.error("Failed to update");
     }
