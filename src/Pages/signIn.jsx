@@ -15,7 +15,7 @@ import {
   Image,
   useToast
 } from "@chakra-ui/react";
-import { Formik, Field, Form, FieldProps, FormikHelpers } from "formik";
+import { Formik, Field, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import axios from "../Api/axios";
@@ -66,11 +66,14 @@ export default function SignIn() {
       });
   };
 
-
-
   return (
     <VStack m="auto" h="100%" justifyContent="center" bg="#0f0f0f">
-      <VStack bg="#191919" p={6} borderRadius="16px" w="30%">
+      <VStack
+        bg="#191919"
+        p={6}
+        borderRadius="16px"
+        w={{ base: "90%", sm: "80%", md: "60%", lg: "40%", xl: "30%" }}
+      >
         <Image src="./Images/logo.png" h="100px" w="100px" />
         <Text color="#fff" fontSize="3xl" fontWeight="medium" mt="4">
           Welcome!
@@ -99,9 +102,7 @@ export default function SignIn() {
                     <Field name="username">
                       {({ field, form }) => (
                         <FormControl
-                          isInvalid={
-                            !!form.errors.username && !!form.touched.username
-                          }
+                          isInvalid={!!form.errors.username && !!form.touched.username}
                         >
                           <FormLabel htmlFor="username" color="#fff">
                             Username
@@ -114,8 +115,7 @@ export default function SignIn() {
                             background=""
                           />
                           <FormErrorMessage>
-                            {typeof form.errors.username === "string" &&
-                              form.errors.username}
+                            {typeof form.errors.username === "string" && form.errors.username}
                           </FormErrorMessage>
                         </FormControl>
                       )}
@@ -125,9 +125,7 @@ export default function SignIn() {
                     <Field name="email">
                       {({ field, form }) => (
                         <FormControl
-                          isInvalid={
-                            !!form.errors.username && !!form.touched.username
-                          }
+                          isInvalid={!!form.errors.email && !!form.touched.email}
                         >
                           <FormLabel htmlFor="email" color="#fff">
                             Email
@@ -140,8 +138,7 @@ export default function SignIn() {
                             background=""
                           />
                           <FormErrorMessage>
-                            {typeof form.errors.email === "string" &&
-                              form.errors.email}
+                            {typeof form.errors.email === "string" && form.errors.email}
                           </FormErrorMessage>
                         </FormControl>
                       )}
@@ -151,9 +148,7 @@ export default function SignIn() {
                     <Field name="password">
                       {({ field, form }) => (
                         <FormControl
-                          isInvalid={
-                            !!form.errors.password && !!form.touched.password
-                          }
+                          isInvalid={!!form.errors.password && !!form.touched.password}
                         >
                           <FormLabel htmlFor="password" color="#fff">
                             Password
@@ -166,24 +161,20 @@ export default function SignIn() {
                             background=""
                           />
                           <FormErrorMessage>
-                            {typeof form.errors.password === "string" &&
-                              form.errors.password}
+                            {typeof form.errors.password === "string" && form.errors.password}
                           </FormErrorMessage>
                         </FormControl>
                       )}
                     </Field>
                   </Box>
-
                   {/* <Box pb="5" >
-                  <Field name="confirmPassword">
+                    <Field name="confirmPassword">
                       {({ field, form }) => (
                         <FormControl
-                          isInvalid={
-                            !!form.errors.password && !!form.touched.password
-                          }
+                          isInvalid={!!form.errors.confirmPassword && !!form.touched.confirmPassword}
                         >
                           <FormLabel htmlFor="confirmPassword" color="#fff">
-                           Confirm Password
+                            Confirm Password
                           </FormLabel>
                           <Input
                             {...field}
@@ -192,8 +183,7 @@ export default function SignIn() {
                             type="password"
                           />
                           <FormErrorMessage>
-                            {typeof form.errors.confirmPassword === "string" &&
-                              form.errors.confirmPassword}
+                            {typeof form.errors.confirmPassword === "string" && form.errors.confirmPassword}
                           </FormErrorMessage>
                         </FormControl>
                       )}
@@ -205,7 +195,7 @@ export default function SignIn() {
                       type="submit"
                       bg="#39610f"
                       isLoading={isSubmitting}
-                      colorScheme="primary"
+                      colorScheme="green"
                       w="full"
                     >
                       Sign in
