@@ -8,6 +8,7 @@ import {
   Button,
   Grid,
   GridItem,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { BasicCard, AddItem } from "../Components";
 import { AddWithoutBg } from "../Components/Icons";
@@ -28,11 +29,10 @@ const initialValues = {
 
 export default function Notes() {
   const { userData } = useContext(AuthContext);
-  const [isAdd, setIsAdd] = useState();
+  const [isAdd, setIsAdd] = useState(false);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
 
   useEffect(() => {
     getNotesData();
@@ -50,6 +50,7 @@ export default function Notes() {
     } catch (err) {
       setError(err.message || "An error occurred");
     }
+    setLoading(false);
   };
 
   const handleNoteSubmit = async (values) => {
@@ -69,41 +70,45 @@ export default function Notes() {
     }
   };
 
+  // Responsive grid template columns
+  const gridTemplateColumns = useBreakpointValue({
+    base: "repeat(1, 1fr)", // 1 column on small screens
+    md: "repeat(2, 1fr)", // 2 columns on medium screens
+    lg: "repeat(3, 1fr)"  // 3 columns on large screens
+  });
+
   return (
-    <Box bg="#0F0F0F" ms="250px" p={10}>
-      <Text color="#fff" fontSize="3xl">
+    <Box bg="#0F0F0F" mt={{base:"70px" , md:"0"}} ms={{ base: 0, md: "0" }} p={{ base: 4, md: 10 }}>
+      <Text color="#fff" fontSize={{ base: "xl", md: "3xl" }}>
         Sticky Notes
       </Text>
-      <Text color="#808B9A" fontSize="sm" mt={1}>
+      <Text color="#808B9A" fontSize={{ base: "xs", md: "sm" }} mt={1}>
         {todaysDate()}
       </Text>
-      <Grid templateColumns="repeat(3, 1fr)" mt={10}>
-        {data?.map((note, i) => {
-          return (
-            <GridItem key={i}>
-              <BasicCard
-                bg="#191919"
-                p={4}
-                color="#fff"
-                mr={6}
-                mb={6}
-                minH="250px"
-                h="250px"
-              >
-                <Text>{note.body}</Text>
-              </BasicCard>
-            </GridItem>
-          );
-        })}
-
+      <Grid
+        templateColumns={gridTemplateColumns}
+        gap={6}
+        mt={10}
+      >
+        {data?.map((note, i) => (
+          <GridItem key={i}>
+            <BasicCard
+              bg="#191919"
+              p={4}
+              color="#fff"
+              minH="250px"
+              h="250px"
+            >
+              <Text>{note.body}</Text>
+            </BasicCard>
+          </GridItem>
+        ))}
         <GridItem>
           <BasicCard
             bg="#191919"
             p={4}
             color="#fff"
-            mr={6}
             minH="250px"
-            mb={6}
             h="250px"
           >
             <AddWithoutBg
